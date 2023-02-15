@@ -1,8 +1,8 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import "./App.css";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
-import { boardDefault } from "./Words";
+import { boardDefault, generateWordSet } from "./Words";
 
 export const AppContext = createContext();
 
@@ -19,6 +19,11 @@ function App() {
 
     const correctWords = "HELLO";
 
+        useEffect(() => {
+            generateWordSet().then((words) => {
+                console.log(words);
+            })
+        }, [])
 
     const onSelectLetter = (keyVal: string) => {
         // if letterPos is greater than 4, then return the end function
