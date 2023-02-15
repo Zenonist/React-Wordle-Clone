@@ -3,12 +3,18 @@ import "./App.css";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
 import { boardDefault, generateWordSet } from "./Words";
+import GameOver from "./components/GameOver";
 
 export const AppContext = createContext();
 
 type currAttemptType = {
     attempt: number,
     letterPos: number,
+}
+
+type gameOverType = {
+    gameOver: boolean,
+    guessedWord: boolean,
 }
 
 function App() {
@@ -18,11 +24,13 @@ function App() {
     const [currAttempt, setCurrAttempt] = useState<currAttemptType>({ attempt: 0, letterPos: 0 })
     const [wordSet, setWordSet] = useState(new Set())
     const [disabledLetters, setDisabledLetters] = useState<String[]>([]);
-    const correctWord = "HELLO";
+    const [gameOver, setGameOver] = useState<gameOverType>({gameOver: false, guessedWord: false});
+    const [correctWord, setCorrectWord] = useState<String>("");
 
     useEffect(() => {
         generateWordSet().then((words) => {
             setWordSet(words.wordSet);
+            setCorrectWord(words.chosenWord);
         })
     }, [])
 
@@ -61,8 +69,15 @@ function App() {
         }
 
         // * if the word is correct, then won the game
-        if (currWord === correctWord) {
-            alert("You won the game!");
+        if (currWord.toLowerCase() === correctWord) {
+
+            console.log("WON")
+            setGameOver({gameOver: true, guessedWord: true});
+            return;
+        }
+
+        if (currAttempt.attempt === 5) {
+            setGameOver({gameOver: true, guessedWord: false});
         }
     }
 
@@ -71,11 +86,11 @@ function App() {
             <nav>
                 <h1>Wordle</h1>
             </nav>
-            <AppContext.Provider value={{ board, setBoard, currAttempt, setCurrAttempt, onSelectLetter, onEnter, onDelete, correctWord, disabledLetters, setDisabledLetters }}>
+            <AppContext.Provider value={{ board, setBoard, currAttempt, setCurrAttempt, onSelectLetter, onEnter, onDelete, correctWord, disabledLetters, setDisabledLetters, gameOver, setGameOver }}>
                 {/* style: center all components*/}
                 <div className="game">
                     <Board />
-                    <Keyboard />
+                    {gameOver.gameOver ? <GameOver /> : <Keyboard />}
                 </div>
             </AppContext.Provider>
         </div>

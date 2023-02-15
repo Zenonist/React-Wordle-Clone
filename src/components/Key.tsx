@@ -8,7 +8,7 @@ type KeyParam = {
 }
 
 export default function Key(_KeyParam: KeyParam) {
-    const { onSelectLetter, onDelete, onEnter, disabledLetters} = useContext(AppContext);
+    const { onSelectLetter, onDelete, onEnter} = useContext(AppContext);
     const selectLetter = () => {
         if (_KeyParam.keyVal === "ENTER") {
             onEnter();

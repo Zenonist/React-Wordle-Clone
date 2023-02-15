@@ -12,6 +12,7 @@ export const boardDefault: String[][] = [
 
 export const generateWordSet = async () => {
     let wordSet;
+    let chosenWord;
     /*
     It returns a promise that resolves with the result of parsing the body text as JSON.
     */
@@ -20,6 +21,8 @@ export const generateWordSet = async () => {
         .then((result) => {
             const wordArr = result.split("\n");
             wordSet = new Set(wordArr);
+            // * Ramdomly choose a word from the word bank
+            chosenWord = wordArr[Math.floor(Math.random() * wordArr.length)];
         });
-    return { wordSet };
+    return { wordSet, chosenWord };
 }
