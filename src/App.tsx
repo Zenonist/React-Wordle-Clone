@@ -16,12 +16,13 @@ function App() {
     // update the board array
     const [board, setBoard] = useState(boardDefault)
     const [currAttempt, setCurrAttempt] = useState<currAttemptType>({ attempt: 0, letterPos: 0 })
+    const [wordSet, setWordSet] = useState(new Set())
 
-    const correctWords = "HELLO";
+    const correctWord = "HELLO";
 
         useEffect(() => {
             generateWordSet().then((words) => {
-                console.log(words);
+                setWordSet(words.wordSet);
             })
         }, [])
 
@@ -45,7 +46,17 @@ function App() {
     const onEnter = (keyVal: string) => {
         // * if letterPos is not 5, then return the end function (Let user insert the rest of the letters)
         if (currAttempt.letterPos !== 5) return;
-        setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+
+        let currentWord = "";
+        for (let i = 0; i < 5; i++) {
+            currentWord += board[currAttempt.attempt][i];
+        }
+        // * check if the word is in the wordSet
+        if (wordSet.has(currentWord.toLowerCase())) {
+            setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+        } else {
+            alert("Word not found");
+        }
     }
 
     return (
@@ -53,7 +64,7 @@ function App() {
             <nav>
                 <h1>Wordle</h1>
             </nav>
-            <AppContext.Provider value={{ board, setBoard, currAttempt, setCurrAttempt, onSelectLetter, onEnter, onDelete, correctWords }}>
+            <AppContext.Provider value={{ board, setBoard, currAttempt, setCurrAttempt, onSelectLetter, onEnter, onDelete, correctWord }}>
                 {/* style: center all components*/}
                 <div className="game">
                     <Board />
