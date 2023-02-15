@@ -55,6 +55,9 @@ function Keyboard() {
                 })}
                 <Key keyVal="DELETE" bigKey={true} />
             </div>
+            <div className='line1'>
+                <Key keyVal="GIVE UP" bigKey={true} />
+            </div>
         </div>
     )
 }

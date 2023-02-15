@@ -70,8 +70,6 @@ function App() {
 
         // * if the word is correct, then won the game
         if (currWord.toLowerCase() === correctWord) {
-
-            console.log("WON")
             setGameOver({gameOver: true, guessedWord: true});
             return;
         }
@@ -81,12 +79,15 @@ function App() {
         }
     }
 
+    const onGiveUp = (keyVal: string) => {
+        setGameOver({gameOver: true, guessedWord: false});
+    }
     return (
         <div className="App">
             <nav>
                 <h1>Wordle</h1>
             </nav>
-            <AppContext.Provider value={{ board, setBoard, currAttempt, setCurrAttempt, onSelectLetter, onEnter, onDelete, correctWord, disabledLetters, setDisabledLetters, gameOver, setGameOver }}>
+            <AppContext.Provider value={{ board, setBoard, currAttempt, setCurrAttempt, onSelectLetter, onEnter, onDelete, correctWord, disabledLetters, setDisabledLetters, gameOver, setGameOver, onGiveUp }}>
                 {/* style: center all components*/}
                 <div className="game">
                     <Board />
