@@ -5,7 +5,6 @@ import Letter from './Letter'
 function Board() {
     return (
         <div className='board'>
-            {" "}
             <div className='row'>
                 {/* letterPos: position of block, attemptvalue: how many time attempt is used */}
                 <Letter letterPos={0} attemptValue={0} />
