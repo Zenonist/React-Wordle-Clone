@@ -8,7 +8,7 @@ function Keyboard() {
     const keys3: String[] = ["Z", "X", "C", "V", "B", "N", "M"];
     const allkeys: String[] = [...keys1, ...keys2, ...keys3];
 
-    const { onSelectLetter, onDelete, onEnter, currAttempt} = useContext(AppContext);
+    const { onSelectLetter, onDelete, onEnter, currAttempt, disabledLetters} = useContext(AppContext);
     const handleKeyboard = useCallback( (event: { key: string | String; }) => {
         if (event.key === "Enter") {
             onEnter();
@@ -36,14 +36,14 @@ function Keyboard() {
             <div className="line1">
                 {/* show each key inside key1 list */}
                 {keys1.map((key) => {
-                    return <Key keyVal={key} bigKey={false}/>
+                    return <Key keyVal={key} bigKey={false} disabled={disabledLetters.includes(key)}/>
                 })}
             </div>
             {/* Second line */}
             <div className="line2">
                 {/* show each key inside key2 list */}
                 {keys2.map((key) => {
-                    return <Key keyVal={key} bigKey={false}/>
+                    return <Key keyVal={key} bigKey={false} disabled={disabledLetters.includes(key)} />
                 })}
             </div>
             {/* Third line */}
@@ -51,9 +51,9 @@ function Keyboard() {
                 <Key keyVal="ENTER" bigKey={true}/>
                 {/* show each key inside key3 list */}
                 {keys3.map((key) => {
-                    return <Key keyVal={key} bigKey={false}/>
+                    return <Key keyVal={key} bigKey={false} disabled={disabledLetters.includes(key)}/>
                 })}
-                <Key keyVal="DELETE" bigKey={true}/>
+                <Key keyVal="DELETE" bigKey={true} />
             </div>
         </div>
     )

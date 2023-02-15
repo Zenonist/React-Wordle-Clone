@@ -17,18 +17,19 @@ function App() {
     const [board, setBoard] = useState(boardDefault)
     const [currAttempt, setCurrAttempt] = useState<currAttemptType>({ attempt: 0, letterPos: 0 })
     const [wordSet, setWordSet] = useState(new Set())
-
+    const [disabledLetters, setDisabledLetters] = useState<String[]>([]);
     const correctWord = "HELLO";
 
-        useEffect(() => {
-            generateWordSet().then((words) => {
-                setWordSet(words.wordSet);
-            })
-        }, [])
+    useEffect(() => {
+        generateWordSet().then((words) => {
+            setWordSet(words.wordSet);
+        })
+    }, [])
 
     const onSelectLetter = (keyVal: string) => {
         // if letterPos is greater than 4, then return the end function
         if (currAttempt.letterPos > 4) return;
+        if (disabledLetters.includes(keyVal)) return;
         const newBoard = [...board];
         newBoard[currAttempt.attempt][currAttempt.letterPos] = keyVal;
         setBoard(newBoard);
@@ -47,15 +48,21 @@ function App() {
         // * if letterPos is not 5, then return the end function (Let user insert the rest of the letters)
         if (currAttempt.letterPos !== 5) return;
 
-        let currentWord = "";
+        let currWord = "";
         for (let i = 0; i < 5; i++) {
-            currentWord += board[currAttempt.attempt][i];
+            currWord += board[currAttempt.attempt][i];
         }
         // * check if the word is in the wordSet
-        if (wordSet.has(currentWord.toLowerCase())) {
+        if (wordSet.has(currWord.toLowerCase())) {
             setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
         } else {
             alert("Word not found");
+            setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
+        }
+
+        // * if the word is correct, then won the game
+        if (currWord === correctWord) {
+            alert("You won the game!");
         }
     }
 
@@ -64,7 +71,7 @@ function App() {
             <nav>
                 <h1>Wordle</h1>
             </nav>
-            <AppContext.Provider value={{ board, setBoard, currAttempt, setCurrAttempt, onSelectLetter, onEnter, onDelete, correctWord }}>
+            <AppContext.Provider value={{ board, setBoard, currAttempt, setCurrAttempt, onSelectLetter, onEnter, onDelete, correctWord, disabledLetters, setDisabledLetters }}>
                 {/* style: center all components*/}
                 <div className="game">
                     <Board />

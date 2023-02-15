@@ -4,10 +4,11 @@ import { AppContext } from '../App'
 type KeyParam = {
     keyVal: String,
     bigKey: Boolean,
+    disabled: Boolean,
 }
 
 export default function Key(_KeyParam: KeyParam) {
-    const { onSelectLetter, onDelete, onEnter} = useContext(AppContext);
+    const { onSelectLetter, onDelete, onEnter, disabledLetters} = useContext(AppContext);
     const selectLetter = () => {
         if (_KeyParam.keyVal === "ENTER") {
             onEnter();
@@ -21,6 +22,6 @@ export default function Key(_KeyParam: KeyParam) {
 
     return (
         // if bigKey is true, then id="big"
-        <div className="key" id={_KeyParam.bigKey && "big"} onClick={selectLetter} >{_KeyParam.keyVal}</div>
+        <div className="key" id={_KeyParam.bigKey ? "big": _KeyParam.disabled && "disabled"} onClick={selectLetter} >{_KeyParam.keyVal}</div>
     )
 }
