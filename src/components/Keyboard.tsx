@@ -1,12 +1,37 @@
-import React from 'react'
+import React, { useCallback, useContext, useEffect} from 'react'
+import { AppContext } from '../App'
 import Key from './Key';
 
 function Keyboard() {
     const keys1: String[] = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
     const keys2: String[] = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
     const keys3: String[] = ["Z", "X", "C", "V", "B", "N", "M"];
+    const allkeys: String[] = [...keys1, ...keys2, ...keys3];
+
+    const { onSelectLetter, onDelete, onEnter, currAttempt} = useContext(AppContext);
+    const handleKeyboard = useCallback( (event: { key: string | String; }) => {
+        if (event.key === "Enter") {
+            onEnter();
+        } else if (event.key === "Backspace") {
+            onDelete();
+        } else {
+            allkeys.forEach((key) => {
+                if (event.key.toLowerCase() === key.toLowerCase()) {
+                    onSelectLetter(key);
+                }
+            });
+        }
+    }, [currAttempt]);
+    useEffect(() => {
+        document.addEventListener("keydown", handleKeyboard);
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyboard);
+        }
+    }, [handleKeyboard])
+
     return (
-        <div className='keybaord'>
+        <div className='keyboard'>
             {/* First line */}
             <div className="line1">
                 {/* show each key inside key1 list */}
