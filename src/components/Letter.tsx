@@ -12,9 +12,14 @@ interface boarddefaultInterface {
 
 
 export default function Letter(_LetterParam: LetterParam) {
-    const { board } = useContext(AppContext)
-    const letter: String[][] = board[_LetterParam.attemptValue][_LetterParam.letterPos];
+    const { board, correctWords, currAttempt } = useContext(AppContext)
+    const letter: String = board[_LetterParam.attemptValue][_LetterParam.letterPos];
+
+    const correct = correctWords[_LetterParam.letterPos] === letter;
+    const almost = !correct && letter !== "" && correctWords.includes(letter);
+    // * Convert to string for changing boolean into string (Typescript)
+    const letterState = String(currAttempt.attempt > _LetterParam.attemptValue && (correct ? "correct" : almost ? "almost" : "error"));
     return (
-        <div className='letter'>{letter}</div>
+        <div className='letter' id={letterState}>{letter}</div>
     )
 }
