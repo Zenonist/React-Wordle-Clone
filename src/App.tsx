@@ -1,5 +1,4 @@
 import { useState, createContext } from "react";
-import reactLogo from "./assets/react.svg";
 import "./App.css";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
@@ -16,10 +15,12 @@ function App() {
             <nav>
                 <h1>Wordle</h1>
             </nav>
-            <p>test</p>
             <AppContext.Provider value={{board, setBoard}}>
-                <Board />
-                <Keyboard />
+                {/* style: center all components*/}
+                <div className="game">
+                    <Board />
+                    <Keyboard />
+                </div>
             </AppContext.Provider>
         </div>
     );
